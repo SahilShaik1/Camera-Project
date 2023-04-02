@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.stealthcopter.networktools.SubnetDevices;
 import com.stealthcopter.networktools.subnet.Device;
 
-import org.opencv.android.OpenCVLoader;
 
 import java.net.InetAddress;
 import java.util.ArrayList;

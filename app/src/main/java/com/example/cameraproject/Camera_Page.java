@@ -1,106 +1,64 @@
 package com.example.cameraproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.SurfaceView;
-import android.view.View;
+import androidx.appcompat.app.AppCompatActivity;
+import org.videolan.libvlc.LibVLC;
+import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaPlayer;
+import org.videolan.libvlc.util.VLCVideoLayout;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraActivity;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.videoio.VideoCapture;
+public class Camera_Page extends AppCompatActivity
+{
+    private static final String url = "rtsp://a:b@10.0.0.155:8080/h264_pcm.sdp";
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-public class Camera_Page extends CameraActivity {
-    private static String LOGTAG = "Debug";
-    
-    private CameraBridgeViewBase Camera;
-
-    private BaseLoaderCallback mloaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status){
-                case LoaderCallbackInterface.SUCCESS:{
-                    Log.v(LOGTAG, "OpenCv loaded");
-                    Camera.enableView();
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
-            }
-        }
-    };
+    private LibVLC libVlc;
+    private MediaPlayer mediaPlayer;
+    private VLCVideoLayout videoLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_page);
-        Camera = (CameraBridgeViewBase) findViewById(R.id.cameraview);
-        Camera.setVisibility(SurfaceView.VISIBLE);
-        Camera.setCvCameraViewListener(cvCameraViewListener);
+
+        libVlc = new LibVLC(this);
+        mediaPlayer = new MediaPlayer(libVlc);
+        videoLayout = findViewById(R.id.videoLayout);
     }
 
     @Override
-    protected List<?extends CameraBridgeViewBase> getCameraViewList() {
-        return Collections.singletonList(Camera);
-    }
+    protected void onStart()
+    {
+        super.onStart();
 
-    private CameraBridgeViewBase.CvCameraViewListener2 cvCameraViewListener = new CameraBridgeViewBase.CvCameraViewListener2() {
-        @Override
-        public void onCameraViewStarted(int width, int height) {
+        mediaPlayer.attachViews(videoLayout, null, false, false);
 
-        }
+        Media media = new Media(libVlc, Uri.parse(url));
+        media.setHWDecoderEnabled(true, false);
+        media.addOption(":network-caching=600");
 
-        @Override
-        public void onCameraViewStopped() {
 
-        }
-
-        @Override
-        public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-            return inputFrame.rgba();
-        }
-    };
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(Camera != null){
-            Camera.disableView();
-        }
+        mediaPlayer.setMedia(media);
+        media.release();
+        mediaPlayer.play();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(LOGTAG,"OpenCV not found, Initializing");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mloaderCallback);
-        } else{
-            mloaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
+    protected void onStop()
+    {
+        super.onStop();
+
+        mediaPlayer.stop();
+        mediaPlayer.detachViews();
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
-        if (Camera != null) {
-            Camera.disableView();
-        }
+
+        mediaPlayer.release();
+        libVlc.release();
     }
-
-
-
 }
