@@ -13,7 +13,7 @@ import org.videolan.libvlc.util.VLCVideoLayout;
 public class Camera_Page extends AppCompatActivity
 {
 //    private String url = "rtsp://a:b@10.0.0.155:8080/h264_pcm.sdp";
-    private String url;
+    private String url = GlobalVars.url;
 
     private LibVLC libVlc;
     private MediaPlayer mediaPlayer;
@@ -34,11 +34,6 @@ public class Camera_Page extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        if(GlobalVars.username == "" && GlobalVars.password == ""){
-           url = "rtsp://" + GlobalVars.ip_chosen + ":8080/h264_pcm.sdp";
-        } else{
-            url = "rtsp://" + GlobalVars.username + ":" + GlobalVars.password + "@" + GlobalVars.ip_chosen + ":8080/h264_pcm.sdp";
-        }
         Toast.makeText(getApplicationContext(),url,Toast.LENGTH_SHORT).show();
         mediaPlayer.attachViews(videoLayout, null, false, false);
         Media media = new Media(libVlc, Uri.parse(url));
