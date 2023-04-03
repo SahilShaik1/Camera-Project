@@ -14,6 +14,7 @@
 
     <application
         android:allowBackup="true"
+        android:name="com.example.cameraproject.GlobalVars"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +25,12 @@
         <activity
             android:name=".Camera_Page"
             android:exported="false" />
+        <activity
+            android:name=".Login_Password_Screen"
+            android:exported="false"/>
+        <activity
+            android:name=".AddressPage"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

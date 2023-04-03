@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Camera Project"
 include ':app'
-include ':OpenCV'

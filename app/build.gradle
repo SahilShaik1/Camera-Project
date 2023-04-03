@@ -29,7 +29,6 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':OpenCV')
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
@@ -42,6 +41,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
+    implementation 'org.videolan.android:libvlc-all:3.4.4'
     implementation 'com.github.stealthcopter:AndroidNetworkTools:0.4.5.3'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
