@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Login_Password_Screen extends AppCompatActivity {
@@ -17,23 +18,44 @@ public class Login_Password_Screen extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.Username);
         EditText password = (EditText) findViewById(R.id.Password);
         Button submitBtn = (Button) findViewById(R.id.submit_area);
+        EditText ending = (EditText) findViewById(R.id.rtsp_ending_input);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username.getText().toString() == "" && password.getText().toString() == ""){
+                String endingText = ending.getText().toString();
+                String userText = username.getText().toString();
+                String passText = password.getText().toString();
+
+
+                if((userText.equals("") && passText.equals("")) || (userText.equals(null) && passText.equals(null))){
                     GlobalVars.username = "";
                     GlobalVars.password = "";
-                    Toast.makeText(getApplicationContext(), "Nothing entered", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), userText, Toast.LENGTH_SHORT).show();
+
+                    if(!endingText.equals("-1")) {
+                        GlobalVars.url = "rtsp://" + GlobalVars.ip_chosen + ":8080" + endingText;
+                        Toast.makeText(getApplicationContext(), "Ending Specified: " + endingText, Toast.LENGTH_SHORT).show();
+                    } else{
+                        GlobalVars.url = "rtsp://" + GlobalVars.ip_chosen + ":8080/h264_pcm.sdp";
+                    }
                     Intent intent = new Intent(getApplicationContext(), Camera_Page.class);
                     startActivity(intent);
                     getApplicationContext().startActivity(intent);
                 }
-                if(username.getText().toString() != "" && password.getText().toString() != ""){
-                    GlobalVars.username = username.getText().toString();
-                    GlobalVars.password = password.getText().toString();
+                if((!userText.equals("") && !passText.equals("")) || (!userText.equals(null) && !passText.equals(null))){
+
+                    if(!endingText.equals("-1")) {
+                        GlobalVars.url = "rtsp://" + userText + ":" + passText + "@" + GlobalVars.ip_chosen + ":8080" + endingText;
+                        Toast.makeText(getApplicationContext(), "Ending Specified: " + endingText, Toast.LENGTH_SHORT).show();
+                    } else{
+                        GlobalVars.url = "rtsp://" + userText + ":" + passText + "@" + GlobalVars.ip_chosen + ":8080/h264_pcm.sdp";
+                    }
+                    GlobalVars.username = userText;
+                    GlobalVars.password = passText;
+                    Toast.makeText(getApplicationContext(), userText, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), Camera_Page.class);
                     startActivity(intent);
-                    Toast.makeText(getApplicationContext(), "Both values entered", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Please Enter Both or No Values", Toast.LENGTH_SHORT).show();

@@ -15,4 +15,6 @@ public class GlobalVars extends Application {
     public static String username;
 
     public static String password;
+
+    public static String url;
 }
