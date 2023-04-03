@@ -41,7 +41,6 @@ public class Login_Password_Screen extends AppCompatActivity {
                     }
                     Intent intent = new Intent(getApplicationContext(), Camera_Page.class);
                     startActivity(intent);
-                    getApplicationContext().startActivity(intent);
                 }
                 if((!userText.equals("") && !passText.equals("")) || (!userText.equals(null) && !passText.equals(null))){
 
