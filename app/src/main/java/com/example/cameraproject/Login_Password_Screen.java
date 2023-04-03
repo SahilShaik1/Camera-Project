@@ -27,13 +27,13 @@ public class Login_Password_Screen extends AppCompatActivity {
                 String passText = password.getText().toString();
 
 
-                if(userText == "" && passText == ""){
+                if((userText.equals("") && passText.equals("")) || (userText.equals(null) && passText.equals(null))){
                     GlobalVars.username = "";
                     GlobalVars.password = "";
 
                     Toast.makeText(getApplicationContext(), userText, Toast.LENGTH_SHORT).show();
 
-                    if(endingText != "-1") {
+                    if(!endingText.equals("-1")) {
                         GlobalVars.url = "rtsp://" + GlobalVars.ip_chosen + ":8080" + endingText;
                         Toast.makeText(getApplicationContext(), "Ending Specified: " + endingText, Toast.LENGTH_SHORT).show();
                     } else{
@@ -43,13 +43,13 @@ public class Login_Password_Screen extends AppCompatActivity {
                     startActivity(intent);
                     getApplicationContext().startActivity(intent);
                 }
-                if(userText != "" && passText != ""){
+                if((!userText.equals("") && !passText.equals("")) || (!userText.equals(null) && !passText.equals(null))){
 
-                    if(endingText != "-1") {
-                        GlobalVars.url = "rtsp://" + GlobalVars.username + ":" + GlobalVars.password + "@" + GlobalVars.ip_chosen + ":8080" + endingText;
+                    if(!endingText.equals("-1")) {
+                        GlobalVars.url = "rtsp://" + userText + ":" + passText + "@" + GlobalVars.ip_chosen + ":8080" + endingText;
                         Toast.makeText(getApplicationContext(), "Ending Specified: " + endingText, Toast.LENGTH_SHORT).show();
                     } else{
-                        GlobalVars.url = "rtsp://" + GlobalVars.username + ":" + GlobalVars.password + "@" + GlobalVars.ip_chosen + ":8080/h264_pcm.sdp";
+                        GlobalVars.url = "rtsp://" + userText + ":" + passText + "@" + GlobalVars.ip_chosen + ":8080/h264_pcm.sdp";
                     }
                     GlobalVars.username = userText;
                     GlobalVars.password = passText;
